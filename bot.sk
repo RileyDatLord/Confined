@@ -1,0 +1,90 @@
+on script load:
+  login to "token" with name "bot"
+
+discord command help:
+  prefixes: w>
+  executable in: guild
+  trigger:
+    make embed:
+      set title of embed to title with text "Command Help"
+      add field named "Commands" with value "`w>help` | `Shows this message of course!`%nl%`w>points [mention]` | `View the points of a given user, or yourself`" to fields of embed
+    reply with last created embed
+discord command points [<text>]:
+  prefixes: w>
+  executable in: guild
+  trigger:
+    set {_m::*} to mentioned users of event-message
+
+    if {_m::1} is set:
+      make embed:
+        set title of embed to title with text "%{_m::1}%##%discriminator of {_m::1}%"
+        set {_i} to id of {_m::1}
+        add field named "Points" with value "%rounded {stats::guilds::%id of event-guild%::users::%{_i}%::points}% guild points!%nl%%rounded {stats::users::%{_i}%::points}% global points!%nl%`To gain more points keep talking`" to fields of embed
+      send last created embed to event-channel
+    else:
+      make embed:
+        set title of embed to title with text "%event-user%##%discriminator of event-user%"
+        add field named "Points" with value "%rounded {stats::guilds::%id of event-guild%::users::%id of event-user%::points}% guild points!%nl%%rounded {stats::users::%id of event-user%::points}% global points!%nl%`To gain more points keep talking`" to fields of embed
+      send last created embed to event-channel
+discord command info:
+  prefixes: w>
+  executable in: guild
+  trigger:
+    set {_g::*} to guilds of "bot" parsed as bot
+    make embed:
+      set title of embed to title with text "Bot Info"
+      set description of embed to ":computer: `Made with Vixio %""Vixio""'s version%`%nl%:video_game: `In %size of {_g::*}% Guilds!`"
+    reply with last created embed
+discord command top [<text>]:
+  prefixes: w>
+  executable in: guild
+  trigger:
+    reply with "Starting Loop"
+    reply with "Looping through %size of {stats::users::*}% items... ""%{stats::users::%id of event-user%::*}%"""
+    loop {stats::users::*}:
+      reply with "Working"
+    reply with "Sorted:%nl%%{_top::*}%"
+    loop 10 times:
+      add "`##%loop-number%` | `%{_p::%loop-value%}%` | `%{_po::%loop-value%}%`" to {_l::*}
+    reply with "%{_l::1}%%nl%%{_l::2}%%nl%%{_l::3}%%nl%%{_l::4}%%nl%%{_l::5}%%nl%%{_l::6}%%nl%%{_l::7}%%nl%%{_l::8}%%nl%%{_l::9}%%nl%%{_l::10}%"
+#Owner Only
+discord command reload:
+  prefixes: w>
+  executable in: guild
+  trigger:
+    if "%id of event-user%" is "240310996390903808":
+      reply with "`Reloading`"
+      make console execute "sk reload bot"
+      reply with "`Reloaded!`"
+    else:
+      reply with "`No Permission!`"
+discord command editpoints [<text>] [<integer>] [<text>]:
+  prefixes: w>
+  executable in: guild
+  trigger:
+    if "%id of event-user%" is "240310996390903808":
+      set {_m::*} to mentioned users of event-message
+      if arg-1 is not set:
+        reply with "`Invalid Syntax!`%nl%`w>editpoints [add | remove | set] [integer] [mention]`%nl%`Example: w>editpoints add 200 @Riley##9999`"
+      else if arg-2 is not set:
+        reply with "`Invalid Syntax!`%nl%`w>editpoints [add | remove | set] [integer] [mention]`%nl%`Example: w>editpoints add 200 @Riley##9999`"
+      else if {_m::1} is not set:
+        reply with "`Invalid Syntax!`%nl%`w>editpoints [add | remove | set] [integer] [mention]`%nl%`Example: w>editpoints add 200 @Riley##9999`"
+      else:
+        set {_i} to id of {_m::1}
+        if arg-1 is "add":
+          reply with "`Added %arg-2% global points to %{_m::1}%##%discriminator of {_m::1}%`"
+          add arg-2 to {stats::users::%{_i}%::points}
+        else if arg-1 is "remove":
+          reply with "`Removed %arg-2% global points from %{_m::1}%##%discriminator of {_m::1}%`"
+          remove arg-2 from {stats::users::%{_i}%::points}
+        else if arg-1 is "set":
+          reply with "`Set %{_m::1}%##%discriminator of {_m::1}%'s points to %arg-2%`"
+          set {stats::users::%{_i}%::points} to arg-2
+        else:
+          reply with "`Invalid Syntax!`%nl%`w>editpoints [add | remove | set] [integer] [mention]`%nl%`Example: w>editpoints add 200 @Riley##9999`"
+guild message received:
+  event-user is not a bot
+  add .1 to {stats::guilds::%id of event-guild%::users::%id of event-user%::points}
+  add .1 to {stats::users::%id of event-user%::points}
+  set {stats::users::%id of event-user%::now} to now
