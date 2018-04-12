@@ -1,0 +1,9 @@
+on join:
+  if {data::users::%uuid of player%::joined} is not set:
+    set join message to "&6&lWorldHost> &eEveryone welcome %player%!"
+    add 1 to {data::server::uj}
+    add 1 to {data::server::tj}
+    set {data::users::%uuid of player%::joined} to true
+   else:
+    set join message to "&6&lWorldHost> &eWelcome Back %player%!"
+    add 1 to {data::server::tj}
