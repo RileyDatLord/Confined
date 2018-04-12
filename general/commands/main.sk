@@ -1,0 +1,12 @@
+options:
+  p: &6&lConfined>
+  c: &7
+  c2: &6&l
+  o: CreativityUnited
+
+command /help:
+  permission: command.help
+  trigger:
+    send "{@p} {@c}Command List"
+    send "{@c2}/help{@c}&l : {@c}Lists off the commands"
+    
