@@ -1,6 +1,5 @@
-# WorldHost
-A minehut server, that allows people to showcase off there world!
-
+# Confined
+--------
 
 ## General Information
 Confined is a minecraft server hosted on minehut.com and made with Skript, this is the repository for the server's skripts, includes all the skripts, like moderation commands, general commands, and much more. We appreciate anyone who donates, or contributes to the server by skripting for us.
