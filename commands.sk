@@ -1,0 +1,23 @@
+#
+# Official Confined Skripts
+#
+
+#
+# Options
+#
+options:
+  p: &6&lConfined
+  mc: &e
+
+#
+# General Commands
+#
+
+# /help
+command /help:
+  trigger:
+    add "help" to {_commands::*}
+    set {_commands::help::description} to "{@mc}Shows all the commands"
+    send "&e--- &6List of Commands &e---"
+    loop {_commands::*}:
+      send "&e/&6%loop-value% &8: %{_commands::%loop-value%::description}%"
