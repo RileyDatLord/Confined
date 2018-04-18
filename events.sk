@@ -1,0 +1,22 @@
+#
+# Official Confined Skripts
+#
+
+#
+# Options
+#
+options:
+  p: &6&lConfined
+  mc: &e
+
+#
+# Join / Leave
+#
+
+on join:
+  set join message to "&7[&a+&7] &8%player%"
+  if {d::u::%uuid of player%::new} is not set:
+    add 1 to {d::s::joins}
+    set join message to "&7[&a+&7] &8%player% &7[&8#%{d::s::joins}%&7]"
+on quit:
+  set leave message to "&7[&c-&7] &8%player&"
