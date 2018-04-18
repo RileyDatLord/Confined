@@ -1,9 +1,0 @@
-on join:
-  if {data::users::%uuid of player%::joined} is not set:
-    add 1 to {data::server::uj}
-    add 1 to {data::server::tj}
-    set join message to "&6&lConfined> &eEveryone please welcome %player% to &6&lConfined&e! &7(##%{data::server::uj}%)"
-    set {data::users::%uuid of player%::joined} to true
-  else:
-    add 1 to {data::server::tj}
-    set join message to "&6&lConfined> &eWelcome back %player%!"
